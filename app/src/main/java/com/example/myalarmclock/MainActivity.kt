@@ -8,12 +8,20 @@ import android.icu.util.Calendar
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), TimeAlertDialog.Listener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // エクストラの"onReceive"に true が指定されて起動されたらダイアログを表示する
+        if (intent?.getBooleanExtra("onReceive", false) == true) {
+            val dialog = TimeAlertDialog()
+            dialog.show(supportFragmentManager, "alert_dialog")
+        }
+
         setContentView(R.layout.activity_main)
 
         setAlarm.setOnClickListener {
@@ -30,6 +38,20 @@ class MainActivity : AppCompatActivity() {
             cancelAlarmManager()
         }
     }
+
+    // TimeAlertDialog.Listener
+
+    override fun getUp() {
+        Toast.makeText(this, "起きるがクリックされました。", Toast.LENGTH_SHORT)
+            .show()
+    }
+
+    override fun snooze() {
+        Toast.makeText(this, "あと5分がクリックされました。", Toast.LENGTH_SHORT)
+            .show()
+    }
+
+    // Private methods
 
     private fun setAlarmManager(caleneder: Calendar) {
         // AlarmManagerクラスのインスタンスを作成する
