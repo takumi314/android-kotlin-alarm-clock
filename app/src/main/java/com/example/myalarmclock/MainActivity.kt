@@ -42,13 +42,15 @@ class MainActivity : AppCompatActivity(), TimeAlertDialog.Listener {
     // TimeAlertDialog.Listener
 
     override fun getUp() {
-        Toast.makeText(this, "起きるがクリックされました。", Toast.LENGTH_SHORT)
-            .show()
+        finish()    // アクティビティを閉じる
     }
 
     override fun snooze() {
-        Toast.makeText(this, "あと5分がクリックされました。", Toast.LENGTH_SHORT)
-            .show()
+        val calender = Calendar.getInstance()
+        calender.timeInMillis = System.currentTimeMillis()
+        calender.add(Calendar.MINUTE, 5)    // 5分後にアラームを設定する
+        setAlarmManager(calender)
+        finish()
     }
 
     // Private methods
