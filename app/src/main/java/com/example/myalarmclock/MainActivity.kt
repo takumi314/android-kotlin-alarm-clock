@@ -25,6 +25,10 @@ class MainActivity : AppCompatActivity() {
             /* AlarmManagerにインスタンスを渡す */
             setAlarmManager(calender)
         }
+
+        cancelAlarm.setOnClickListener {
+            cancelAlarmManager()
+        }
     }
 
     private fun setAlarmManager(caleneder: Calendar) {
@@ -56,4 +60,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun cancelAlarmManager() {
+        // AlarmManagerクラスのインスタンスを作成する
+        val am = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, AlarmBroadcastReceiver::class.java)
+        val pending = PendingIntent.getBroadcast(this, 0 ,intent, 0)
+        // Intentを一致するアラームをすべて削除する
+        am.cancel(pending)
+    }
 }
