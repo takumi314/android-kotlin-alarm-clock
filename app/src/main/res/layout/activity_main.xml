@@ -49,7 +49,7 @@
         app:layout_constraintTop_toBottomOf="@+id/dateView" />
 
     <Button
-        android:id="@+id/setAlerm"
+        android:id="@+id/setAlarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -61,7 +61,7 @@
         app:layout_constraintTop_toBottomOf="@+id/timeText" />
 
     <Button
-        android:id="@+id/cancelAlerm"
+        android:id="@+id/cancelAlarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -70,5 +70,5 @@
         android:text="アラームをキャンセルする"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/setAlerm" />
+        app:layout_constraintTop_toBottomOf="@+id/setAlarm" />
 </androidx.constraintlayout.widget.ConstraintLayout>
