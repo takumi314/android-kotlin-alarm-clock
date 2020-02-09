@@ -11,7 +11,7 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
     // ブロードキャストインデントを受け取った時にコールされる
     // ^ intent: 受け取ったインテントの情報を取得することができる
     override fun onReceive(context: Context, intent: Intent) {
-        Toast.makeText(context , "アラームを受診しました。", Toast.LENGTH_SHORT)    // トーストを作成する
+        Toast.makeText(context,"アラームを受診しました。", Toast.LENGTH_SHORT)    // トーストを作成する
             .show() // トーストを表示する
     }
 
