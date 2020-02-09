@@ -10,8 +10,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
+import android.text.format.DateFormat
+import java.text.ParseException
+import java.lang.IllegalArgumentException
+import java.text.SimpleDateFormat
+import java.util.Date
 
-class MainActivity : AppCompatActivity(), TimeAlertDialog.Listener {
+class MainActivity : AppCompatActivity(), TimeAlertDialog.Listener,
+    DatePickerFragment.OnDateSelectedListener,
+    TimePickerFragment.OnTimeSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,17 +32,36 @@ class MainActivity : AppCompatActivity(), TimeAlertDialog.Listener {
         setContentView(R.layout.activity_main)
 
         setAlarm.setOnClickListener {
-            val calender = Calendar.getInstance()
-            /* 現在時刻をセットする */
-            calender.timeInMillis = System.currentTimeMillis()
-            /* 現在の時刻の5秒後を設定する */
-            calender.add(Calendar.SECOND, 5)
-            /* AlarmManagerにインスタンスを渡す */
-            setAlarmManager(calender)
+            val date = "${dateText.text} ${timeText.text}".toDate()
+            when {
+                date != null -> {
+                    val calender = Calendar.getInstance()
+                    calender.time = date
+                    /* AlarmManagerにインスタンスを渡す */
+                    setAlarmManager(calender)
+                    /*  */
+                    Toast.makeText(this, "アラームをセットしました", Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    Toast.makeText(this, "日付の形式が正しくありません", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+
         }
 
         cancelAlarm.setOnClickListener {
             cancelAlarmManager()
+        }
+
+        dateText.setOnClickListener {
+            val dialog = DatePickerFragment()
+            dialog.show(supportFragmentManager, "date_dialog")
+        }
+
+        timeText.setOnClickListener {
+            val dialog = TimePickerFragment()
+            dialog.show(supportFragmentManager, "time_dialog")
         }
     }
 
@@ -51,6 +77,20 @@ class MainActivity : AppCompatActivity(), TimeAlertDialog.Listener {
         calender.add(Calendar.MINUTE, 5)    // 5分後にアラームを設定する
         setAlarmManager(calender)
         finish()
+    }
+
+    // DatePickerFragment.OnDateSelectedListener
+
+    override fun onSelected(year: Int, month: Int, date: Int) {
+        var c = Calendar.getInstance()
+        c.set(year, month, date)
+        // dateText.text = DateFormat.format("yyyy/MM/dd", c)
+    }
+
+    // TimePickerFragment.OnTimeSelectedListener
+
+    override fun onSelected(hourOfDay: Int, minute: Int) {
+        timeText.text = "%1$02d:%2$02d".format(hourOfDay, minute)
     }
 
     // Private methods
@@ -91,5 +131,15 @@ class MainActivity : AppCompatActivity(), TimeAlertDialog.Listener {
         val pending = PendingIntent.getBroadcast(this, 0 ,intent, 0)
         // Intentを一致するアラームをすべて削除する
         am.cancel(pending)
+    }
+
+    private fun String.toDate(pattern: String = "yyyy/MM/dd HH:mm"): Date? {
+        return try {
+            SimpleDateFormat(pattern).parse(this)
+        } catch (e: IllegalArgumentException) {
+            return null
+        } catch (e: ParseException) {
+            return null
+        }
     }
 }
