@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity(), TimeAlertDialog.Listener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // エクストラの"onReceive"に true が指定されて起動されたらダイアログを表示する
+        /* エクストラの"onReceive"に true が指定されて起動されたらダイアログを表示する */
         if (intent?.getBooleanExtra("onReceive", false) == true) {
             val dialog = TimeAlertDialog()
             dialog.show(supportFragmentManager, "alert_dialog")
@@ -47,9 +47,7 @@ class MainActivity : AppCompatActivity(), TimeAlertDialog.Listener,
                 else -> {
                     Toast.makeText(this, "日付の形式が正しくありません", Toast.LENGTH_SHORT).show()
                 }
-
             }
-
         }
 
         cancelAlarm.setOnClickListener {
@@ -146,4 +144,5 @@ class MainActivity : AppCompatActivity(), TimeAlertDialog.Listener,
             return null
         }
     }
+
 }
