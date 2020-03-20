@@ -5,16 +5,18 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.icu.util.Calendar
+import android.icu.util.Calendar.getInstance
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import android.text.format.DateFormat
+import androidx.annotation.RequiresApi
 import java.text.ParseException
 import java.lang.IllegalArgumentException
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.*
 
 class MainActivity : AppCompatActivity(), TimeAlertDialog.Listener,
     DatePickerFragment.OnDateSelectedListener,
@@ -82,9 +84,11 @@ class MainActivity : AppCompatActivity(), TimeAlertDialog.Listener,
     // DatePickerFragment.OnDateSelectedListener
 
     override fun onSelected(year: Int, month: Int, date: Int) {
-        var c = Calendar.getInstance()
+        // DateFormatの引数に注意!!
+        //  - https://developer.android.com/reference/kotlin/java/util/Calendar.html
+        val c = java.util.Calendar.getInstance()
         c.set(year, month, date)
-        // dateText.text = DateFormat.format("yyyy/MM/dd", c)
+        dateText.text = DateFormat.format("yyyy/MM/dd", c)
     }
 
     // TimePickerFragment.OnTimeSelectedListener
